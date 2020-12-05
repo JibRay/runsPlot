@@ -2,6 +2,9 @@
 # This program plots a three dimensional graph representing a runner's
 # performance vs time and length of run. Input is an activity file downloaded
 # from connect.garmin.com.
+# FIXME: Runs.load() excludes runs whose distance and pace fall outside
+# a given range. See "Exclude outliers" comment below. These limits should
+# probably be command-line arugments that override defaults.
 
 from mpl_toolkits import mplot3d
 import numpy as np
@@ -15,7 +18,7 @@ from datetime import date
 #============================================================================
 # Globals
 
-version = 3
+version = 4
 
 #Input file field index values.
 TYPE       = 0
@@ -71,7 +74,7 @@ class Runs:
 
           # Exclude outliers.
           if runDistance >= 2.0 and runDistance <= 27.0 \
-            and runPace > 6.0 and runPace < 20.0:
+            and runPace > 4.0 and runPace < 20.0:
               self.inputEvents = np.append(self.inputEvents, \
                 Event(runDate, runDistance, runPace))
 
@@ -151,7 +154,7 @@ class Runs:
 # Functions
 
 def displayVersion():
-  print("runningHistory version " + str(version))
+  print("runsPlot version " + str(version))
   quit()
 
 #============================================================================
